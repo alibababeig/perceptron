@@ -79,13 +79,14 @@ class Perceptron:
 
     def fit(self, epochs=1):
         """Fit the model on training data."""
+        self._evaluate_on_test()
         for _ in range(epochs):
             for i, x in enumerate(self._x_train):
                 y = self._y_train[i]
                 y_p = self.predict(x)[0]
                 if y != y_p:
-                    self._evaluate_on_test()
                     self._w += (y * x.reshape(-1, 1))
+                    self._evaluate_on_test()
 
         return (self.w_hat, self.accuracies)
 
