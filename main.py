@@ -1,6 +1,9 @@
 import pandas as pd
 
 
+RND_SEED = 12345
+
+
 class DatasetHandler:
     def __init__(self, csv_path):
         """Memorize the CSV file path"""
@@ -13,6 +16,12 @@ class DatasetHandler:
         if preprocess:
             self._preprocess()
         return self._data
+
+    def train_test_split(self, train_ratio):
+        """Split the dataset into train and test sets."""
+        train_data = self._data.sample(frac=train_ratio, random_state=RND_SEED)
+        test_data = self._data.drop(train_data.index)
+        return (train_data, test_data)
 
     def _preprocess(self):
         """Remove bad samples, convert some datatypes, and normalize columns"""
@@ -40,8 +49,8 @@ class DatasetHandler:
 
 def main():
     dh = DatasetHandler('./assets/Dataset.csv')
-    dataset = dh.load()
-    dataset.to_csv('./foo.csv')
+    dh.load()
+    train, test = dh.train_test_split(train_ratio=0.85)
 
 
 if __name__ == '__main__':
