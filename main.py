@@ -60,11 +60,11 @@ class Perceptron:
 
         # Split training data into X and Y
         self._x_train = train_data[:, :-1]
-        self._y_train = train_data[:, -1]
+        self._y_train = train_data[:, -1].reshape(-1, 1)
 
         # Split test data into X and Y
         self._x_test = test_data[:, :-1]
-        self._y_test = test_data[:, -1]
+        self._y_test = test_data[:, -1].reshape(-1, 1)
 
         # Initialize the weights vector
         d = self._x_train.shape[1]
