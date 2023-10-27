@@ -7,7 +7,7 @@ RND_SEED = 12345
 
 class DatasetHandler:
     def __init__(self, csv_path):
-        """Memorize the CSV file path"""
+        """Memorize the CSV file path."""
         self._path = csv_path
         self._data = None
 
@@ -19,13 +19,13 @@ class DatasetHandler:
         return self._data
 
     def train_test_split(self, train_ratio):
-        """Split the dataset into train and test sets."""
+        """Split the dataset into training and test sets."""
         train_data = self._data.sample(frac=train_ratio, random_state=RND_SEED)
         test_data = self._data.drop(train_data.index)
         return (train_data, test_data)
 
     def _preprocess(self):
-        """Remove bad samples, convert some datatypes, and normalize columns"""
+        """Remove bad samples, convert some datatypes, and normalize columns."""
         # Removing bad (incomplete) samples
         self._data.drop(
             self._data[
@@ -50,7 +50,7 @@ class DatasetHandler:
 
 class Perceptron:
     def __init__(self, train_data, test_data):
-        """Memorize training and test data and do some initializations."""
+        """Memorize training and test data and do some initialization."""
         n_train = train_data.shape[0]
         n_test = test_data.shape[0]
 
@@ -73,10 +73,11 @@ class Perceptron:
         # Keep the best weight vector (Pocket algorithm)
         self.w_hat = None
 
-        # Store a sequence of model accuracy on test data
+        # Store a sequence of model's accuracy on test data
         self.accuracies = []
 
     def fit(self, epochs=1):
+        """Fit the model on training data."""
         for _ in range(epochs):
             for i, x in enumerate(self._x_train):
                 y = self._y_train[i]
@@ -88,9 +89,11 @@ class Perceptron:
         return (self.w_hat, self.accuracies)
 
     def predict(self, x):
+        """Do a prediction on input data, using the current weight vector."""
         return np.sign(np.dot(x, self._w))
 
     def _evaluate_on_test(self):
+        """Evaluate model's accuracy on test data."""
         y_p = self.predict(self._x_test)
         accuracy = np.sum(y_p == self._y_test) / self._y_test.shape[0]
         if (len(self.accuracies) == 0) or (accuracy > max(self.accuracies)):
