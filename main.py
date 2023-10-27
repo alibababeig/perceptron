@@ -102,11 +102,12 @@ class Perceptron:
         self.accuracies.append(accuracy)
 
 
-def analyze_results(accuracies):
+def analyze_results(w_hat, accuracies):
     accuracies = np.array(accuracies)
     n_updates = np.argwhere(accuracies > 0.7)[0][0]
 
-    print(f'Maximum accuracy on test set = {100*max(accuracies):.1f}%')
+    print(f'ŵ = \n{w_hat}\n')
+    print(f'ŵ accuracy = {100*max(accuracies):.1f}%\n')
     print('Number of weight updates to achieve 70% accuracy on test set = '
           f'{n_updates}')
 
@@ -123,9 +124,9 @@ def main():
     train, test = dh.train_test_split(train_ratio=0.85)
 
     p = Perceptron(train, test)
-    _, accuracies = p.fit()
+    w_hat, accuracies = p.fit()
 
-    analyze_results(accuracies)
+    analyze_results(w_hat, accuracies)
 
 
 if __name__ == '__main__':
