@@ -1,8 +1,9 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
 
-RND_SEED = 12345
+RND_SEED = None
 
 
 class DatasetHandler:
@@ -101,6 +102,21 @@ class Perceptron:
         self.accuracies.append(accuracy)
 
 
+def analyze_results(accuracies):
+    accuracies = np.array(accuracies)
+    n_updates = np.argwhere(accuracies > 0.7)[0][0]
+
+    print(f'Maximum accuracy on test set = {100*max(accuracies):.1f}%')
+    print('Number of weight updates to achieve 70% accuracy on test set = '
+          f'{n_updates}')
+
+    plt.plot(accuracies)
+    plt.title('Perceptron Accuracy on Test Data')
+    plt.xlabel('Iteration')
+    plt.ylabel('Accuracy')
+    plt.show()
+
+
 def main():
     dh = DatasetHandler('./assets/Dataset.csv')
     dh.load()
@@ -108,6 +124,8 @@ def main():
 
     p = Perceptron(train, test)
     _, accuracies = p.fit()
+
+    analyze_results(accuracies)
 
 
 if __name__ == '__main__':
