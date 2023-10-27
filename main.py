@@ -103,6 +103,7 @@ class Perceptron:
 
 
 def analyze_results(w_hat, accuracies):
+    """Report model performance in terms of accuracy and convergence time."""
     accuracies = np.array(accuracies)
     n_updates = np.argwhere(accuracies > 0.7)[0][0]
 
